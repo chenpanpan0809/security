@@ -1,0 +1,20 @@
+# 应用名称
+spring:
+  application:
+    name: security
+  freemarker:
+    template-loader-path: classpath:/templates/
+    cache: false
+    charset: utf-8
+    request-context-attribute: request
+    suffix: .ftl
+  mvc:
+    static-path-pattern: /static/**
+server:
+  port: 8080
+  servlet:
+    context-path: /authority
+  address: 127.0.0.1
+
+
+
