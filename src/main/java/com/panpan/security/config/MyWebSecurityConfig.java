@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.sql.DataSource;
+
 @Configuration
 public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -19,6 +21,8 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
     BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private Environment environment;
+    @Autowired
+    DataSource dataSource;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -26,13 +30,16 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("test")
                 .password("{noop}1")
                 .authorities("ADMIN");*/
-        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
+       /* auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery("select username,password, enabled from users where username = ?")
+                .rolePrefix("ROLE_");*/
+        auth.userDetailsService(userService);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login","/login/error","/static/css/**","/static/layui/**").permitAll()
+                .antMatchers("/login","/register","/register/save","/login/error","/static/css/**","/static/layui/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

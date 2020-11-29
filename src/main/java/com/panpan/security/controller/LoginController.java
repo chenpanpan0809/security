@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/login")
-public class LoginController {
+public class LoginController extends BaseController{
 
     @RequestMapping("")
     public String login(HttpServletRequest request, HttpServletResponse response){
