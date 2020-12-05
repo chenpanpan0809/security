@@ -9,8 +9,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -23,6 +28,8 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
     private Environment environment;
     @Autowired
     DataSource dataSource;
+    @Autowired
+    private PersistentTokenRepository tokenRepository;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -38,20 +45,30 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.headers().frameOptions().disable();
         http.authorizeRequests()
-                .antMatchers("/login","/register","/register/save","/login/error","/static/css/**","/static/layui/**").permitAll()
+                .antMatchers("/login","/register","/register/save","/login/error","/static/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/index")
+                .defaultSuccessUrl("/")
                 .failureUrl("/login?error=true")
                 .and()
                 .logout()
                 .logoutUrl("/logout")
+                .clearAuthentication(true)
                 .invalidateHttpSession(true)
-                .logoutSuccessUrl("/login/error");
+                .and().rememberMe().tokenRepository(tokenRepository);//覆盖内存存在token形势
+    }
+
+    @Bean
+    public PersistentTokenRepository tokenRepository(){
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+       // jdbcTokenRepository.setCreateTableOnStartup(true);
+        return  jdbcTokenRepository;
     }
 
     @Bean

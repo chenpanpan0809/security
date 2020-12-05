@@ -1,6 +1,8 @@
 package com.panpan.security.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.panpan.security.entity.Authorities;
+import com.panpan.security.service.AuthoritiesService;
 import com.panpan.security.service.UserDbService;
 import com.panpan.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDbService userDbService;
+    @Autowired
+    AuthoritiesService authoritiesService;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -29,9 +33,18 @@ public class UserServiceImpl implements UserService {
         if (one == null){
             throw new UsernameNotFoundException("用户名不存在!");
         }
+        QueryWrapper queryWrapperAuth = new QueryWrapper();
+        queryWrapperAuth.eq("USERNAME",one.getUsername());
+        Authorities authoritiesServiceOne = authoritiesService.getOne(queryWrapperAuth);
         List<GrantedAuthority> authorities = new ArrayList<>();
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ADMIN");
-        authorities.add(grantedAuthority);
+        GrantedAuthority grantedAuthority = null;
+        if (authoritiesServiceOne != null){
+            String[] roleArray = authoritiesServiceOne.getAuthority().split(",");
+            for (String  role: roleArray) {
+                grantedAuthority = new SimpleGrantedAuthority(role);
+                authorities.add(grantedAuthority);
+            }
+        }
         UserDetails userDetails = new User(one.getUsername(),one.getPassword(),authorities);
         return userDetails;
     }
