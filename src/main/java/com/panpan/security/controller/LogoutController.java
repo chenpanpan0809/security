@@ -1,5 +1,6 @@
 package com.panpan.security.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -14,12 +15,15 @@ import java.io.IOException;
 @RequestMapping("/logout")
 public class LogoutController {
 
+    @Value("${server.servlet.context-path}")
+    private String context;
+
     @RequestMapping("")
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        response.sendRedirect("/authority/login");
+        response.sendRedirect("/"+context+"/login");
     }
 }

@@ -8,10 +8,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @SpringBootApplication
 @MapperScan("com.panpan.security.mapper")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityApplication {
+public class ApcApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SecurityApplication.class, args);
+        SpringApplication.run(ApcApplication.class, args);
     }
 
 }

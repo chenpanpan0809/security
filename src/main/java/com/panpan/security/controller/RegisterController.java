@@ -23,7 +23,7 @@ public class RegisterController extends BaseController{
     @Autowired
     private   UserDbService userDbService;
 
-    @RequestMapping("")
+  /*  @RequestMapping("")
     public String input(){
         return "register-input";
     }
@@ -64,5 +64,5 @@ public class RegisterController extends BaseController{
             log.error(e.getLocalizedMessage());
         }
         return  handelResult(result,msg);
-    }
+    }*/
 }

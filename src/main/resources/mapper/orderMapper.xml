@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.panpan.security.mapper.OrderMapper">
+
+    <select id="selectOrderPage" resultType="map" parameterType="map">
+        SELECT t1.company,t.*
+        FROM T_ORDER t left join T_COMPANY t1 ON t.company_id = t1.id
+    </select>
+
+</mapper>

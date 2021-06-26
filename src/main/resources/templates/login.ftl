@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>盼盼园地</title>
+    <title>项目管理一体化平台</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -14,7 +14,7 @@
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
     <div class="layadmin-user-login-main">
         <div class="layadmin-user-login-box layadmin-user-login-header">
-            <h2>盼盼园地</h2>
+            <h2>项目管理一体化平台</h2>
             <label><#if RequestParameters.error??>${Session.SPRING_SECURITY_LAST_EXCEPTION.message!}</#if></label>
         </div>
         <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
@@ -52,7 +52,7 @@
                 <a href="javascript:;"><i class="layui-icon layui-icon-login-wechat"></i></a>
                 <a href="javascript:;"><i class="layui-icon layui-icon-login-weibo"></i></a>
 
-                <a href="${base!}/register" class="layadmin-user-jump-change layadmin-link">注册帐号</a>
+              <#--  <a href="${base!}/register" class="layadmin-user-jump-change layadmin-link">注册帐号</a>-->
             </div>
         </div>
     </div>
